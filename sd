@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>חוזה הלוואה</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .contract {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        .terms {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .collateral-section {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+        .interest-info {
+            background-color: #fff3e0;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid #ffcc80;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr.payment-row:hover {
+            background-color: #f5f5f5;
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #e8eaf6;
+        }
+        #printButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #printButton:hover {
+            background-color: #45a049;
+        }
+        .hidden {
+            display: none;
+        }
+        @media print {
+            #printButton {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contract">
+        <h1>חוזה הלוואה</h1>
+        
+        <div class="form-group">
+            <label for="fullName">שם מלא:</label>
+            <input type="text" id="fullName" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="discordName">שם בדיסקורד:</label>
+            <input type="text" id="discordName" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date">תאריך:</label>
+            <input type="date" id="date" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="amount">סכום ההלוואה:</label>
+            <input type="number" id="amount" min="1" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="payments">מספר תשלומים:</label>
+            <select id="payments" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+
+        <!-- נכס לפיקדון -->
+        <div class="collateral-section">
+            <h3>נכס לפיקדון</h3>
+            <div class="form-group">
+                <label for="collateralType">סוג הנכס:</label>
+                <select id="collateralType" onchange="toggleCollateralFields()" required>
+                    <option value="">בחר סוג נכס</option>
+                    <option value="car">רכב</option>
+                    <option value="property">דירה</option>
+                    <option value="other">אחר</option>
+                </select>
+            </div>
+
+            <div id="carFields" class="hidden">
+                <div class="form-group">
+                    <label for="carNumber">מספר רכב:</label>
+                    <input type="text" id="carNumber">
+                </div>
+            </div>
+
+            <div id="propertyFields" class="hidden">
+                <div class="form-group">
+                    <label for="propertyAddress">כתובת הנכס:</label>
+                    <input type="text" id="propertyAddress">
+                </div>
+            </div>
+
+            <div id="otherFields" class="hidden">
+                <div class="form-group">
+                    <label for="otherCollateral">פירוט הנכס:</label>
+                    <input type="text" id="otherCollateral">
+                </div>
+                <div class="form-group">
+                    <label for="otherValue">שווי מוערך של הנכס (בש״ח):</label>
+                    <input type="number" id="otherValue" min="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- מידע על ריביות -->
+        <div class="interest-info">
+            <h3>פירוט ריביות והחזרים</h3>
+            <ul>
+                <li>החזר בתשלום בודד: 10% ריבית</li>
+                <li>כל יום תשלום נוסף: 2.5% ריבית נוספת</li>
+                <li>איחור בתשלום: 0.5% קנס לכל יום איחור</li>
+                <li>תשלומים נפרסים במרווחים של 3 ימים</li>
+            </ul>
+        </div>
+
+        <!-- תנאי החוזה -->
+        <div class="terms">
+            <h3>תנאי החוזה</h3>
+            <ol>
+                <li>הלווה מתחייב לשלם את כל התשלומים במועדם בהתאם ללוח התשלומים המפורט בחוזה זה.</li>
+                <li>הלווה מעמיד את הנכס המפורט לעיל כבטוחה להלוואה.</li>
+                <li>במקרה של אי עמידה בתשלומים:
+                    <ul>
+                        <li>המלווה רשאי לעקל את הנכס המשועבד ללא התראה מוקדמת.</li>
+                        <li>יוטל קנס בגובה 10% מיתרת ההלוואה.</li>
+                        <li>יתווספו קנסות איחור יומיים כמפורט בלוח הסילוקין.</li>
+                    </ul>
+                </li>
+                <li>אי עמידה בתנאי התשלום מהווה הפרה יסודית של החוזה.</li>
+                <li>כל שינוי בתנאי ההחזר מחייב אישור בכתב מהמלווה.</li>
+            </ol>
+        </div>
+
+        <h2>לוח תשלומים וסילוקין</h2>
+        <table id="paymentSchedule">
+            <thead>
+                <tr>
+                    <th>מספר תשלום</th>
+                    <th>תאריך</th>
+                    <th>סכום בסיס</th>
+                    <th>ריבית</th>
+                    <th>סה"כ לתשלום</th>
+                    <th>קנס איחור ליום</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="2">סה"כ</td>
+                    <td id="totalBase">-</td>
+                    <td id="totalInterest">-</td>
+                    <td id="totalAmount">-</td>
+                    <td>-</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="signatures" style="margin-top: 40px;">
+            <p>
+                הריני מאשר/ת כי קראתי את כל תנאי החוזה ואני מסכים/ה להם:
+            </p>
+            <p>
+                חתימת הלווה: ________________<br>
+                תאריך: <span id="signatureDate"></span>
+            </p>
+            <p>
+                חתימת המלווה: ________________<br>
+                תאריך: <span id="lenderDate"></span>
+            </p>
+        </div>
+
+        <button id="printButton" onclick="window.print()">הדפס חוזה</button>
+    </div>
+
+    <script>
+        function toggleCollateralFields() {
+            const type = document.getElementById('collateralType').value;
+            document.getElementById('carFields').classList.add('hidden');
+            document.getElementById('propertyFields').classList.add('hidden');
+            document.getElementById('otherFields').classList.add('hidden');
+
+            if (type === 'car') {
+                document.getElementById('carFields').classList.remove('hidden');
+            } else if (type === 'property') {
+                document.getElementById('propertyFields').classList.remove('hidden');
+            } else if (type === 'other') {
+                document.getElementById('otherFields').classList.remove('hidden');
+            }
+        }
+
+        function updatePaymentSchedule() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const payments = parseInt(document.getElementById('payments').value) || 1;
+            const dateStr = document.getElementById('date').value;
+            
+            if (!amount || !payments || !dateStr) return;
+
+            const basePayment = amount / payments;
+            const tbody = document.getElementById('paymentSchedule').getElementsByTagName('tbody')[0];
+            tbody.innerHTML = '';
+
+            let totalBase = 0;
+            let totalInterest = 0;
+            let totalAmount = 0;
+
+            const startDate = new Date(dateStr);
+            
+            for (let i = 0; i < payments; i++) {
+                const paymentDate = new Date(startDate);
+                // כל תשלום מתווסף 3 ימים
+                paymentDate.setDate(paymentDate.getDate() + (i * 3));
+                
+                // חישוב ריבית
+                let interestRate = 0.10; // ריבית בסיס 10%
+                interestRate += (i * 0.025); // תוספת 2.5% לכל יום נוסף
+                
+                const interest = basePayment * interestRate;
+                const totalPayment = basePayment + interest;
+                const latePaymentFee = totalPayment * 0.005; // 0.5% קנס ליום איחור
+
+                totalBase += basePayment;
+                totalInterest += interest;
+                totalAmount += totalPayment;
+                
+                const row = tbody.insertRow();
+                row.classList.add('payment-row');
+                row.insertCell(0).textContent = i + 1;
+                row.insertCell(1).textContent = paymentDate.toLocaleDateString('he-IL');
+                row.insertCell(2).textContent = basePayment.toFixed(2) + ' ₪';
+                row.insertCell(3).textContent = interest.toFixed(2) + ' ₪';
+                row.insertCell(4).textContent = totalPayment.toFixed(2) + ' ₪';
+                row.insertCell(5).textContent = latePaymentFee.toFixed(2) + ' ₪';
+            }
+
+            // עדכון שורת הסיכום
+            document.getElementById('totalBase').textContent = totalBase.toFixed(2) + ' ₪';
+            document.getElementById('totalInterest').textContent = totalInterest.toFixed(2) + ' ₪';
+            document.getElementById('totalAmount').textContent = totalAmount.toFixed(2) + ' ₪';
+
+            // עדכון תאריכי חתימה
+            const today = new Date().toLocaleDateString('he-IL');
+            document.getElementById('signatureDate').textContent = today;
+            document.getElementById('lenderDate').textContent = today;
+        }
+
+        // הוספת מאזינים לשינויים בטופס
+        document.getElementById('amount').addEventListener('input', updatePaymentSchedule);
+        document.getElementById('payments').addEventListener('change', updatePaymentSchedule);
+        document.getElementById('date').addEventListener('change', updatePaymentSchedule);
+    </script>
+</body>
+</html>
